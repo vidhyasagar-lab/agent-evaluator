@@ -17,11 +17,13 @@ def from_langgraph(messages):
     for m in messages:
         for tc in _get(m, "tool_calls") or []:
             step = Step(tool=_get(tc, "name", ""), args=dict(_get(tc, "args") or {}))
-            by_id[_get(tc, "id")] = step
+            call_id = _get(tc, "id")
+            if call_id:  # some providers omit ids; never key on None
+                by_id[call_id] = step
             steps.append(step)
 
         call_id = _get(m, "tool_call_id")
-        if call_id in by_id:
+        if call_id and call_id in by_id:
             step = by_id[call_id]
             step.ok = _get(m, "status", "success") != "error"
             step.result = str(_get(m, "content", ""))[:RESULT_CAP]
