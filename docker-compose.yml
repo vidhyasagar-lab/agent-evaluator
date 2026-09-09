@@ -1,0 +1,25 @@
+# n8n for agent-trajectory eval development.
+# ponytail: SQLite, no Postgres. The adapter reads execution data over the REST
+# API, so a database container buys nothing until you want SQL over trajectories.
+services:
+  n8n:
+    # Pinned: runData shape is not a stable contract, so the adapter is only
+    # ever tested against a known version. Bump deliberately, re-run tests.
+    image: docker.n8n.io/n8nio/n8n:2.38.1
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - GENERIC_TIMEZONE=UTC
+      - N8N_RUNNERS_ENABLED=true
+      # Eval work is worthless without complete, retained execution data.
+      - EXECUTIONS_DATA_SAVE_ON_SUCCESS=all
+      - EXECUTIONS_DATA_SAVE_ON_ERROR=all
+      - EXECUTIONS_DATA_SAVE_ON_PROGRESS=true
+      - EXECUTIONS_DATA_PRUNE=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:

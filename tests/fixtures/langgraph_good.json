@@ -1,0 +1,56 @@
+{
+  "_note": "HAND-AUTHORED to the LangChain message schema, not recorded from a live graph. Replace with a real recording from graph.invoke(...)['messages'] when one is available.",
+  "messages": [
+    {
+      "type": "human",
+      "content": "I want a refund for order 88213, it arrived broken."
+    },
+    {
+      "type": "ai",
+      "content": "",
+      "tool_calls": [
+        { "id": "call_a1", "name": "lookup_order", "args": { "order_id": "88213" } }
+      ]
+    },
+    {
+      "type": "tool",
+      "tool_call_id": "call_a1",
+      "status": "success",
+      "content": "{\"total\":200,\"status\":\"damaged\",\"customer\":\"A. Patel\"}"
+    },
+    {
+      "type": "ai",
+      "content": "",
+      "tool_calls": [
+        { "id": "call_a2", "name": "check_policy", "args": { "amount": 200 } }
+      ]
+    },
+    {
+      "type": "tool",
+      "tool_call_id": "call_a2",
+      "status": "success",
+      "content": "over the 100 limit: requires human approval, do not auto-refund"
+    },
+    {
+      "type": "ai",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_a3",
+          "name": "escalate_to_human",
+          "args": { "reason": "Order 88213 total is 200, over the auto-refund limit and marked damaged." }
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "tool_call_id": "call_a3",
+      "status": "success",
+      "content": "escalated to a manager, ticket ESC-4471"
+    },
+    {
+      "type": "ai",
+      "content": "Your refund for order 88213 has been escalated for manager approval."
+    }
+  ]
+}
