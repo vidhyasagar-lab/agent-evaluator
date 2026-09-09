@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "luckrate"
+version = "0.1.0.dev0"
+description = "Trajectory evaluation for AI agents - grade the path, not just the answer."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "vidhyasagar-lab" }]
+keywords = ["llm", "agents", "evaluation", "n8n", "langgraph", "trajectory"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Testing",
+]
+# Zero runtime dependencies. Adapters use stdlib only; this is not negotiable.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.urls]
+Source = "https://github.com/vidhyasagar-lab/agent-evaluator"
+Issues = "https://github.com/vidhyasagar-lab/agent-evaluator/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/luckrate"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

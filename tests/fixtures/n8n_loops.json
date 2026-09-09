@@ -1,0 +1,1337 @@
+{
+  "binaryDataSizeBytes": 0,
+  "createdAt": "2026-09-09T12:13:33.928Z",
+  "customData": {
+    "response_ai_agent_1": "I\u2019ve escalated your refund request for order 88213 (damaged, $200) to a manager for approval under policy (ticket ESC-4471)."
+  },
+  "data": {
+    "executionData": {
+      "contextData": {},
+      "metadata": {
+        "Azure OpenAI Chat Model1": [
+          {
+            "subRun": [
+              {
+                "node": "Azure OpenAI Chat Model1",
+                "runIndex": 0
+              }
+            ]
+          },
+          {
+            "subRun": [
+              {
+                "node": "Azure OpenAI Chat Model1",
+                "runIndex": 1
+              }
+            ]
+          },
+          {
+            "subRun": [
+              {
+                "node": "Azure OpenAI Chat Model1",
+                "runIndex": 2
+              }
+            ]
+          },
+          {
+            "subRun": [
+              {
+                "node": "Azure OpenAI Chat Model1",
+                "runIndex": 3
+              }
+            ]
+          }
+        ]
+      },
+      "nodeExecutionStack": [],
+      "runtimeData": {
+        "establishedAt": 1788956013928,
+        "redaction": {
+          "manual": false,
+          "production": false,
+          "version": 2
+        },
+        "source": "webhook",
+        "triggerNode": {
+          "name": "Webhook",
+          "type": "n8n-nodes-base.webhook"
+        },
+        "version": 1
+      },
+      "waitingExecution": {},
+      "waitingExecutionSource": {}
+    },
+    "resultData": {
+      "lastNodeExecuted": "Respond to Webhook",
+      "metadata": {
+        "response_ai_agent_1": "I\u2019ve escalated your refund request for order 88213 (damaged, $200) to a manager for approval under policy (ticket ESC-4471)."
+      },
+      "runData": {
+        "AI Agent1": [
+          {
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "output": "I\u2019ve escalated your refund request for order 88213 (damaged, $200) to a manager for approval under policy (ticket ESC-4471)."
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 13,
+            "executionStatus": "success",
+            "executionTime": 2894,
+            "hints": [],
+            "metadata": {
+              "nodeWasResumed": true,
+              "subNodeExecutionData": {
+                "actions": [
+                  {
+                    "action": {
+                      "actionType": "ExecutionNodeAction",
+                      "id": "call_Vd7jlfhP2eO0x0bXNeVZk27q",
+                      "input": {
+                        "id": "call_8xw7yYxwq4xj7yq4yq4yq4yq",
+                        "reason": "Order 88213 marked damaged; total $200 exceeds $100 auto-refund limit and requires human approval."
+                      },
+                      "metadata": {
+                        "itemIndex": 0,
+                        "toolName": "escalate_to_human"
+                      },
+                      "nodeName": "escalate_to_human",
+                      "type": "ai_tool"
+                    },
+                    "nodeName": "escalate_to_human",
+                    "runIndex": 0
+                  }
+                ],
+                "metadata": {
+                  "itemIndex": 0,
+                  "iterationCount": 3,
+                  "previousRequests": [
+                    {
+                      "action": {
+                        "log": "Calling lookup_order",
+                        "messageLog": [
+                          {
+                            "id": [
+                              "langchain_core",
+                              "messages",
+                              "AIMessage"
+                            ],
+                            "kwargs": {
+                              "additional_kwargs": {},
+                              "content": [],
+                              "invalid_tool_calls": [],
+                              "response_metadata": {},
+                              "tool_calls": [
+                                {
+                                  "args": {
+                                    "id": "call_nDccpUO3oSF2PPmRo2vaeo0f",
+                                    "order_id": "88213"
+                                  },
+                                  "id": "call_nDccpUO3oSF2PPmRo2vaeo0f",
+                                  "name": "lookup_order",
+                                  "type": "tool_call"
+                                }
+                              ]
+                            },
+                            "lc": 1,
+                            "type": "constructor"
+                          }
+                        ],
+                        "tool": "lookup_order",
+                        "toolCallId": "call_nDccpUO3oSF2PPmRo2vaeo0f",
+                        "toolInput": {
+                          "order_id": "88213"
+                        },
+                        "type": "tool_call"
+                      },
+                      "observation": "[{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]"
+                    },
+                    {
+                      "action": {
+                        "log": "Calling lookup_order",
+                        "messageLog": [
+                          {
+                            "id": [
+                              "langchain_core",
+                              "messages",
+                              "AIMessage"
+                            ],
+                            "kwargs": {
+                              "additional_kwargs": {},
+                              "content": [],
+                              "invalid_tool_calls": [],
+                              "response_metadata": {},
+                              "tool_calls": [
+                                {
+                                  "args": {
+                                    "id": "call_12lVcjlVRjy0ISlpCS4hsRMB",
+                                    "order_id": "88213"
+                                  },
+                                  "id": "call_12lVcjlVRjy0ISlpCS4hsRMB",
+                                  "name": "lookup_order",
+                                  "type": "tool_call"
+                                }
+                              ]
+                            },
+                            "lc": 1,
+                            "type": "constructor"
+                          }
+                        ],
+                        "tool": "lookup_order",
+                        "toolCallId": "call_12lVcjlVRjy0ISlpCS4hsRMB",
+                        "toolInput": {
+                          "order_id": "88213"
+                        },
+                        "type": "tool_call"
+                      },
+                      "observation": "[{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]"
+                    },
+                    {
+                      "action": {
+                        "log": "Calling lookup_order",
+                        "messageLog": [
+                          {
+                            "id": [
+                              "langchain_core",
+                              "messages",
+                              "AIMessage"
+                            ],
+                            "kwargs": {
+                              "additional_kwargs": {},
+                              "content": [],
+                              "invalid_tool_calls": [],
+                              "response_metadata": {},
+                              "tool_calls": [
+                                {
+                                  "args": {
+                                    "id": "call_7H4bBUgPTXMKOiW0lyg4LdkU",
+                                    "order_id": "88213"
+                                  },
+                                  "id": "call_7H4bBUgPTXMKOiW0lyg4LdkU",
+                                  "name": "lookup_order",
+                                  "type": "tool_call"
+                                }
+                              ]
+                            },
+                            "lc": 1,
+                            "type": "constructor"
+                          }
+                        ],
+                        "tool": "lookup_order",
+                        "toolCallId": "call_7H4bBUgPTXMKOiW0lyg4LdkU",
+                        "toolInput": {
+                          "order_id": "88213"
+                        },
+                        "type": "tool_call"
+                      },
+                      "observation": "[{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]"
+                    },
+                    {
+                      "action": {
+                        "log": "Calling lookup_order",
+                        "messageLog": [
+                          {
+                            "id": [
+                              "langchain_core",
+                              "messages",
+                              "AIMessage"
+                            ],
+                            "kwargs": {
+                              "additional_kwargs": {},
+                              "content": [],
+                              "invalid_tool_calls": [],
+                              "response_metadata": {},
+                              "tool_calls": [
+                                {
+                                  "args": {
+                                    "id": "call_nd2UdiETiEPY3YMfYmFH13EX",
+                                    "order_id": "88213"
+                                  },
+                                  "id": "call_nd2UdiETiEPY3YMfYmFH13EX",
+                                  "name": "lookup_order",
+                                  "type": "tool_call"
+                                }
+                              ]
+                            },
+                            "lc": 1,
+                            "type": "constructor"
+                          }
+                        ],
+                        "tool": "lookup_order",
+                        "toolCallId": "call_nd2UdiETiEPY3YMfYmFH13EX",
+                        "toolInput": {
+                          "order_id": "88213"
+                        },
+                        "type": "tool_call"
+                      },
+                      "observation": "[{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]"
+                    },
+                    {
+                      "action": {
+                        "log": "Calling check_policy",
+                        "messageLog": [
+                          {
+                            "id": [
+                              "langchain_core",
+                              "messages",
+                              "AIMessage"
+                            ],
+                            "kwargs": {
+                              "additional_kwargs": {},
+                              "content": [],
+                              "invalid_tool_calls": [],
+                              "response_metadata": {},
+                              "tool_calls": [
+                                {
+                                  "args": {
+                                    "amount": 200,
+                                    "id": "call_fhtkA0gbd9DvJMqNvM3zMgyL"
+                                  },
+                                  "id": "call_fhtkA0gbd9DvJMqNvM3zMgyL",
+                                  "name": "check_policy",
+                                  "type": "tool_call"
+                                }
+                              ]
+                            },
+                            "lc": 1,
+                            "type": "constructor"
+                          }
+                        ],
+                        "tool": "check_policy",
+                        "toolCallId": "call_fhtkA0gbd9DvJMqNvM3zMgyL",
+                        "toolInput": {
+                          "amount": 200
+                        },
+                        "type": "tool_call"
+                      },
+                      "observation": "[{\"response\":\"over the 100 limit: requires human approval, do not auto-refund\"}]"
+                    }
+                  ]
+                }
+              },
+              "tracing": {
+                "ai.agent.execution.succeeded": true,
+                "ai.agent.items.failed": 0,
+                "ai.agent.items.total": 1,
+                "ai.agent.iteration.count": 0,
+                "ai.agent.memory.loads": 0,
+                "ai.agent.memory.saves": 0,
+                "ai.agent.streaming.enabled": true,
+                "ai.agent.tool_calls.completed": 1,
+                "ai.agent.tool_calls.requested": 0,
+                "ai.agent.version": "v3",
+                "llm.tokens.estimated": false,
+                "llm.tokens.in": 755,
+                "llm.tokens.out": 37,
+                "llm.tokens.total": 792
+              }
+            },
+            "source": [
+              {
+                "previousNode": "Webhook",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956023301
+          }
+        ],
+        "Azure OpenAI Chat Model1": [
+          {
+            "data": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "response": {
+                        "generations": [
+                          [
+                            {
+                              "generationInfo": {
+                                "finish_reason": "tool_calls"
+                              },
+                              "text": ""
+                            }
+                          ]
+                        ]
+                      },
+                      "tokenUsage": {
+                        "completionTokens": 84,
+                        "promptTokens": 291,
+                        "totalTokens": 375
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 2,
+            "executionStatus": "success",
+            "executionTime": 2771,
+            "inputOverride": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "estimatedTokens": 64,
+                      "messages": [
+                        "System: You are a refund assistant. You do not trust tool results. Call lookup_order with the same order id four separate times to be certain, then call check_policy, then call escalate_to_human. Reply in one short sentence.\nHuman: I want a refund for order 88213, it arrived broken."
+                      ],
+                      "options": {
+                        "configuration": {
+                          "fetchOptions": {
+                            "dispatcher": {
+                              "_events": {},
+                              "_eventsCount": 0
+                            }
+                          }
+                        },
+                        "max_retries": 2,
+                        "model": "gpt-5.2",
+                        "model_kwargs": {},
+                        "temperature": 0,
+                        "use_responses_api": false
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "subRun": [
+                {
+                  "node": "Azure OpenAI Chat Model1",
+                  "runIndex": 0
+                }
+              ]
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956013994
+          },
+          {
+            "data": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "response": {
+                        "generations": [
+                          [
+                            {
+                              "generationInfo": {
+                                "finish_reason": "tool_calls"
+                              },
+                              "text": ""
+                            }
+                          ]
+                        ]
+                      },
+                      "tokenUsage": {
+                        "completionTokens": 47,
+                        "promptTokens": 585,
+                        "totalTokens": 632
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 8,
+            "executionStatus": "success",
+            "executionTime": 3138,
+            "inputOverride": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "estimatedTokens": 416,
+                      "messages": [
+                        "System: You are a refund assistant. You do not trust tool results. Call lookup_order with the same order id four separate times to be certain, then call check_policy, then call escalate_to_human. Reply in one short sentence.\nHuman: I want a refund for order 88213, it arrived broken.\nAI: [{\"id\":\"call_nDccpUO3oSF2PPmRo2vaeo0f\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_nDccpUO3oSF2PPmRo2vaeo0f\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_12lVcjlVRjy0ISlpCS4hsRMB\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_12lVcjlVRjy0ISlpCS4hsRMB\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_7H4bBUgPTXMKOiW0lyg4LdkU\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_7H4bBUgPTXMKOiW0lyg4LdkU\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_nd2UdiETiEPY3YMfYmFH13EX\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_nd2UdiETiEPY3YMfYmFH13EX\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]"
+                      ],
+                      "options": {
+                        "configuration": {
+                          "fetchOptions": {
+                            "dispatcher": {
+                              "_events": {},
+                              "_eventsCount": 0
+                            }
+                          }
+                        },
+                        "max_retries": 2,
+                        "model": "gpt-5.2",
+                        "model_kwargs": {},
+                        "temperature": 0,
+                        "use_responses_api": false
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "subRun": [
+                {
+                  "node": "Azure OpenAI Chat Model1",
+                  "runIndex": 1
+                }
+              ]
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956016842
+          },
+          {
+            "data": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "response": {
+                        "generations": [
+                          [
+                            {
+                              "generationInfo": {
+                                "finish_reason": "tool_calls"
+                              },
+                              "text": ""
+                            }
+                          ]
+                        ]
+                      },
+                      "tokenUsage": {
+                        "completionTokens": 71,
+                        "promptTokens": 656,
+                        "totalTokens": 727
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 11,
+            "executionStatus": "success",
+            "executionTime": 3268,
+            "inputOverride": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "estimatedTokens": 503,
+                      "messages": [
+                        "System: You are a refund assistant. You do not trust tool results. Call lookup_order with the same order id four separate times to be certain, then call check_policy, then call escalate_to_human. Reply in one short sentence.\nHuman: I want a refund for order 88213, it arrived broken.\nAI: [{\"id\":\"call_nDccpUO3oSF2PPmRo2vaeo0f\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_nDccpUO3oSF2PPmRo2vaeo0f\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_12lVcjlVRjy0ISlpCS4hsRMB\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_12lVcjlVRjy0ISlpCS4hsRMB\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_7H4bBUgPTXMKOiW0lyg4LdkU\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_7H4bBUgPTXMKOiW0lyg4LdkU\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_nd2UdiETiEPY3YMfYmFH13EX\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_nd2UdiETiEPY3YMfYmFH13EX\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_fhtkA0gbd9DvJMqNvM3zMgyL\",\"name\":\"check_policy\",\"args\":{\"amount\":200,\"id\":\"call_fhtkA0gbd9DvJMqNvM3zMgyL\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"over the 100 limit: requires human approval, do not auto-refund\"}]"
+                      ],
+                      "options": {
+                        "configuration": {
+                          "fetchOptions": {
+                            "dispatcher": {
+                              "_events": {},
+                              "_eventsCount": 0
+                            }
+                          }
+                        },
+                        "max_retries": 2,
+                        "model": "gpt-5.2",
+                        "model_kwargs": {},
+                        "temperature": 0,
+                        "use_responses_api": false
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "subRun": [
+                {
+                  "node": "Azure OpenAI Chat Model1",
+                  "runIndex": 2
+                }
+              ]
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956020011
+          },
+          {
+            "data": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "response": {
+                        "generations": [
+                          [
+                            {
+                              "generationInfo": {
+                                "finish_reason": "stop"
+                              },
+                              "text": "I\u2019ve escalated your refund request for order 88213 (damaged, $200) to a manager for approval under policy (ticket ESC-4471)."
+                            }
+                          ]
+                        ]
+                      },
+                      "tokenUsage": {
+                        "completionTokens": 37,
+                        "promptTokens": 755,
+                        "totalTokens": 792
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 14,
+            "executionStatus": "success",
+            "executionTime": 2883,
+            "inputOverride": {
+              "ai_languageModel": [
+                [
+                  {
+                    "json": {
+                      "estimatedTokens": 617,
+                      "messages": [
+                        "System: You are a refund assistant. You do not trust tool results. Call lookup_order with the same order id four separate times to be certain, then call check_policy, then call escalate_to_human. Reply in one short sentence.\nHuman: I want a refund for order 88213, it arrived broken.\nAI: [{\"id\":\"call_nDccpUO3oSF2PPmRo2vaeo0f\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_nDccpUO3oSF2PPmRo2vaeo0f\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_12lVcjlVRjy0ISlpCS4hsRMB\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_12lVcjlVRjy0ISlpCS4hsRMB\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_7H4bBUgPTXMKOiW0lyg4LdkU\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_7H4bBUgPTXMKOiW0lyg4LdkU\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_nd2UdiETiEPY3YMfYmFH13EX\",\"name\":\"lookup_order\",\"args\":{\"order_id\":\"88213\",\"id\":\"call_nd2UdiETiEPY3YMfYmFH13EX\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"{\\\"total\\\":200,\\\"status\\\":\\\"damaged\\\",\\\"customer\\\":\\\"A. Patel\\\"}\"}]\nAI: [{\"id\":\"call_fhtkA0gbd9DvJMqNvM3zMgyL\",\"name\":\"check_policy\",\"args\":{\"amount\":200,\"id\":\"call_fhtkA0gbd9DvJMqNvM3zMgyL\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"over the 100 limit: requires human approval, do not auto-refund\"}]\nAI: [{\"id\":\"call_Vd7jlfhP2eO0x0bXNeVZk27q\",\"name\":\"escalate_to_human\",\"args\":{\"reason\":\"Order 88213 marked damaged; total $200 exceeds $100 auto-refund limit and requires human approval.\",\"id\":\"call_Vd7jlfhP2eO0x0bXNeVZk27q\"},\"type\":\"tool_call\"}]\nTool: [{\"response\":\"escalated to a manager, ticket ESC-4471\"}]"
+                      ],
+                      "options": {
+                        "configuration": {
+                          "fetchOptions": {
+                            "dispatcher": {
+                              "_events": {},
+                              "_eventsCount": 0
+                            }
+                          }
+                        },
+                        "max_retries": 2,
+                        "model": "gpt-5.2",
+                        "model_kwargs": {},
+                        "temperature": 0,
+                        "use_responses_api": false
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "subRun": [
+                {
+                  "node": "Azure OpenAI Chat Model1",
+                  "runIndex": 3
+                }
+              ]
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956023307
+          }
+        ],
+        "Respond to Webhook": [
+          {
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "output": "I\u2019ve escalated your refund request for order 88213 (damaged, $200) to a manager for approval under policy (ticket ESC-4471)."
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 15,
+            "executionStatus": "success",
+            "executionTime": 3,
+            "hints": [],
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956026225
+          }
+        ],
+        "Webhook": [
+          {
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "body": {
+                        "message": "I want a refund for order 88213, it arrived broken.",
+                        "system": "You are a refund assistant. You do not trust tool results. Call lookup_order with the same order id four separate times to be certain, then call check_policy, then call escalate_to_human. Reply in one short sentence."
+                      },
+                      "executionMode": "production",
+                      "headers": {
+                        "content-length": "293",
+                        "content-type": "application/json",
+                        "expect": "100-continue",
+                        "host": "localhost:5678",
+                        "user-agent": "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.8875"
+                      },
+                      "params": {},
+                      "query": {},
+                      "webhookUrl": "http://localhost:5678/webhook/refund-agent"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 0,
+            "executionStatus": "success",
+            "executionTime": 0,
+            "hints": [],
+            "source": [],
+            "startTime": 1788956013975
+          }
+        ],
+        "check_policy": [
+          {
+            "data": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "response": "over the 100 limit: requires human approval, do not auto-refund"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 9,
+            "executionStatus": "success",
+            "executionTime": 6,
+            "hints": [],
+            "inputOverride": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "amount": 200,
+                      "id": "call_9yqvZxjYxjYxjYxjYxjYxjYx"
+                    },
+                    "pairedItem": {
+                      "input": 0,
+                      "item": 0,
+                      "sourceOverwrite": {
+                        "previousNode": "Webhook",
+                        "previousNodeOutput": 0,
+                        "previousNodeRun": 0
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "preserveSourceOverwrite": true,
+              "preservedSourceOverwrite": {
+                "previousNode": "Webhook",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956019982
+          }
+        ],
+        "escalate_to_human": [
+          {
+            "data": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "response": "escalated to a manager, ticket ESC-4471"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 12,
+            "executionStatus": "success",
+            "executionTime": 6,
+            "hints": [],
+            "inputOverride": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "id": "call_8xw7yYxwq4xj7yq4yq4yq4yq",
+                      "reason": "Order 88213 marked damaged; total $200 exceeds $100 auto-refund limit and requires human approval."
+                    },
+                    "pairedItem": {
+                      "input": 0,
+                      "item": 0,
+                      "sourceOverwrite": {
+                        "previousNode": "Webhook",
+                        "previousNodeOutput": 0,
+                        "previousNodeRun": 0
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "preserveSourceOverwrite": true,
+              "preservedSourceOverwrite": {
+                "previousNode": "Webhook",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956023281
+          }
+        ],
+        "lookup_order": [
+          {
+            "data": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "response": "{\"total\":200,\"status\":\"damaged\",\"customer\":\"A. Patel\"}"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 3,
+            "executionStatus": "success",
+            "executionTime": 16,
+            "hints": [],
+            "inputOverride": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "order_id": "88213"
+                    },
+                    "pairedItem": {
+                      "input": 0,
+                      "item": 0,
+                      "sourceOverwrite": {
+                        "previousNode": "Webhook",
+                        "previousNodeOutput": 0,
+                        "previousNodeRun": 0
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "preserveSourceOverwrite": true,
+              "preservedSourceOverwrite": {
+                "previousNode": "Webhook",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956016769
+          },
+          {
+            "data": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "response": "{\"total\":200,\"status\":\"damaged\",\"customer\":\"A. Patel\"}"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 4,
+            "executionStatus": "success",
+            "executionTime": 4,
+            "hints": [],
+            "inputOverride": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "order_id": "88213"
+                    },
+                    "pairedItem": {
+                      "input": 0,
+                      "item": 0,
+                      "sourceOverwrite": {
+                        "previousNode": "Webhook",
+                        "previousNodeOutput": 0,
+                        "previousNodeRun": 0
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "preserveSourceOverwrite": true,
+              "preservedSourceOverwrite": {
+                "previousNode": "Webhook",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956016801
+          },
+          {
+            "data": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "response": "{\"total\":200,\"status\":\"damaged\",\"customer\":\"A. Patel\"}"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 5,
+            "executionStatus": "success",
+            "executionTime": 4,
+            "hints": [],
+            "inputOverride": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "order_id": "88213"
+                    },
+                    "pairedItem": {
+                      "input": 0,
+                      "item": 0,
+                      "sourceOverwrite": {
+                        "previousNode": "Webhook",
+                        "previousNodeOutput": 0,
+                        "previousNodeRun": 0
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "preserveSourceOverwrite": true,
+              "preservedSourceOverwrite": {
+                "previousNode": "Webhook",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956016814
+          },
+          {
+            "data": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "response": "{\"total\":200,\"status\":\"damaged\",\"customer\":\"A. Patel\"}"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            },
+            "executionIndex": 6,
+            "executionStatus": "success",
+            "executionTime": 4,
+            "hints": [],
+            "inputOverride": {
+              "ai_tool": [
+                [
+                  {
+                    "json": {
+                      "order_id": "88213"
+                    },
+                    "pairedItem": {
+                      "input": 0,
+                      "item": 0,
+                      "sourceOverwrite": {
+                        "previousNode": "Webhook",
+                        "previousNodeOutput": 0,
+                        "previousNodeRun": 0
+                      }
+                    }
+                  }
+                ]
+              ]
+            },
+            "metadata": {
+              "preserveSourceOverwrite": true,
+              "preservedSourceOverwrite": {
+                "previousNode": "Webhook",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            },
+            "source": [
+              {
+                "previousNode": "AI Agent1",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "startTime": 1788956016825
+          }
+        ]
+      }
+    },
+    "resumeToken": "91de3b52da021f2b101dea63142a078b1085fab6eafd7de8a9666e86255db02d",
+    "startData": {},
+    "version": 1
+  },
+  "deduplicationKey": null,
+  "deletedAt": null,
+  "finished": true,
+  "id": "8",
+  "jsonSizeBytes": 24740,
+  "mode": "webhook",
+  "retryOf": null,
+  "retrySuccessId": null,
+  "startedAt": "2026-09-09T12:13:33.952Z",
+  "status": "success",
+  "stoppedAt": "2026-09-09T12:13:46.245Z",
+  "storedAt": "db",
+  "tracingContext": null,
+  "waitTill": null,
+  "workflowData": {
+    "connections": {
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "Respond to Webhook",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "Azure OpenAI Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_languageModel"
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "main"
+            }
+          ]
+        ]
+      },
+      "check_policy": {
+        "ai_tool": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_tool"
+            }
+          ]
+        ]
+      },
+      "escalate_to_human": {
+        "ai_tool": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_tool"
+            }
+          ]
+        ]
+      },
+      "issue_refund": {
+        "ai_tool": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_tool"
+            }
+          ]
+        ]
+      },
+      "lookup_order": {
+        "ai_tool": [
+          [
+            {
+              "index": 0,
+              "node": "AI Agent1",
+              "type": "ai_tool"
+            }
+          ]
+        ]
+      }
+    },
+    "id": "UdOPVjTNw1Lm0rkB",
+    "name": "refund agent (luckrate fixture source)",
+    "nodeGroups": [],
+    "nodes": [
+      {
+        "id": "2a0af5fb-e27b-4189-9e8a-c644908736cb",
+        "name": "Webhook",
+        "parameters": {
+          "authentication": "none",
+          "httpMethod": "POST",
+          "multipleMethods": false,
+          "options": {},
+          "path": "refund-agent",
+          "responseMode": "responseNode",
+          "webhookNotice": ""
+        },
+        "position": [
+          672,
+          112
+        ],
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "webhookId": "refund-agent"
+      },
+      {
+        "id": "a422d81a-687b-460a-af28-b94e204941a1",
+        "name": "lookup_order",
+        "parameters": {
+          "description": "Look up an order by id. Returns its total, status and customer.",
+          "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"order_id\": { \"type\": \"string\" }\n  },\n  \"required\": [\"order_id\"]\n}",
+          "jsCode": "const orders = {\n  '88213': { total: 200, status: 'damaged', customer: 'A. Patel' },\n  '77104': { total: 40, status: 'damaged', customer: 'R. Silva' }\n};\nconst o = orders[String(query.order_id)];\nreturn o ? JSON.stringify(o) : 'no such order';",
+          "language": "javaScript",
+          "notice": "",
+          "noticeTemplateExample": "",
+          "schemaType": "manual",
+          "specifyInputSchema": true
+        },
+        "position": [
+          1024,
+          336
+        ],
+        "rewireOutputLogTo": "ai_tool",
+        "type": "@n8n/n8n-nodes-langchain.toolCode",
+        "typeVersion": 1.3
+      },
+      {
+        "id": "8473ba00-f9c4-423d-a3d2-c6582d21cc84",
+        "name": "check_policy",
+        "parameters": {
+          "description": "Check the refund policy for an amount. Returns whether a human must approve.",
+          "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"amount\": { \"type\": \"number\" }\n  },\n  \"required\": [\"amount\"]\n}",
+          "jsCode": "const amount = Number(query.amount);\nif (amount > 100) return 'over the 100 limit: requires human approval, do not auto-refund';\nreturn 'within the 100 limit: auto refund allowed';",
+          "language": "javaScript",
+          "notice": "",
+          "noticeTemplateExample": "",
+          "schemaType": "manual",
+          "specifyInputSchema": true
+        },
+        "position": [
+          1184,
+          336
+        ],
+        "rewireOutputLogTo": "ai_tool",
+        "type": "@n8n/n8n-nodes-langchain.toolCode",
+        "typeVersion": 1.3
+      },
+      {
+        "id": "a490d683-5592-4046-9329-864a4d0f568d",
+        "name": "escalate_to_human",
+        "parameters": {
+          "description": "Escalate the case to a human manager with a reason.",
+          "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"reason\": { \"type\": \"string\" }\n  },\n  \"required\": [\"reason\"]\n}",
+          "jsCode": "return 'escalated to a manager, ticket ESC-4471';",
+          "language": "javaScript",
+          "notice": "",
+          "noticeTemplateExample": "",
+          "schemaType": "manual",
+          "specifyInputSchema": true
+        },
+        "position": [
+          1344,
+          336
+        ],
+        "rewireOutputLogTo": "ai_tool",
+        "type": "@n8n/n8n-nodes-langchain.toolCode",
+        "typeVersion": 1.3
+      },
+      {
+        "id": "54cac5a0-dc95-4f72-a48b-2a4713121ff2",
+        "name": "issue_refund",
+        "parameters": {
+          "description": "Issue a refund for an order. Only allowed when policy permits an auto refund.",
+          "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"order_id\": { \"type\": \"string\" },\n    \"amount\": { \"type\": \"number\" }\n  },\n  \"required\": [\"order_id\", \"amount\"]\n}",
+          "jsCode": "return JSON.stringify({ refunded: true, order_id: query.order_id, amount: query.amount });",
+          "language": "javaScript",
+          "notice": "",
+          "noticeTemplateExample": "",
+          "schemaType": "manual",
+          "specifyInputSchema": true
+        },
+        "position": [
+          1504,
+          336
+        ],
+        "type": "@n8n/n8n-nodes-langchain.toolCode",
+        "typeVersion": 1.3
+      },
+      {
+        "id": "9589eb59-c786-4f71-9f40-d8a2bce88b06",
+        "name": "Respond to Webhook",
+        "parameters": {
+          "enableResponseOutput": false,
+          "generalNotice": "",
+          "options": {},
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ output: $json.output, executionId: $execution.id }) }}",
+          "webhookNotice": ""
+        },
+        "position": [
+          1216,
+          112
+        ],
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5
+      },
+      {
+        "id": "cf2ffd54-c6a2-4d4a-8301-9da1d23fa393",
+        "name": "AI Agent1",
+        "parameters": {
+          "aiAgentStarterCallout": "",
+          "hasOutputParser": false,
+          "needsFallback": false,
+          "options": {
+            "systemMessage": "={{ $json.body.system || 'You are a refund assistant. Procedure: (1) call lookup_order for the order total, (2) call check_policy with that total, (3) if human approval is required call escalate_to_human and do NOT call issue_refund, (4) otherwise call issue_refund. Reply in one short sentence.' }}"
+          },
+          "promptType": "define",
+          "text": "={{ $json.body.message }}"
+        },
+        "position": [
+          944,
+          112
+        ],
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1
+      },
+      {
+        "credentials": {},
+        "id": "abf3fee5-2b29-4a42-ba84-66652cddb58d",
+        "name": "Azure OpenAI Chat Model1",
+        "parameters": {
+          "authentication": "azureOpenAiApi",
+          "model": "test-deployment",
+          "notice": "",
+          "options": {
+            "temperature": 0
+          }
+        },
+        "position": [
+          832,
+          336
+        ],
+        "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+        "typeVersion": 1
+      }
+    ],
+    "settings": {
+      "binaryMode": "separate",
+      "executionOrder": "v1"
+    }
+  },
+  "workflowId": "UdOPVjTNw1Lm0rkB",
+  "workflowVersionId": "04be320f-ac25-4c4f-9d5d-f2ea26a1f1bf"
+}
