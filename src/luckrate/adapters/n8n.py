@@ -12,8 +12,16 @@ def from_n8n(execution):
     so no node allow-list is needed.
     """
     run_data = execution["data"]["resultData"]["runData"]
-    starts = [r.get("startTime", 0) for runs in run_data.values() for r in runs]
-    base = min(starts) if starts else 0
+    entries = [r for runs in run_data.values() for r in runs]
+    base = min([r.get("startTime", 0) for r in entries] or [0])
+
+    # executionIndex is a monotonic int across the execution; startTime is only
+    # millisecond-resolution. Choose one for ALL entries: the two live in
+    # different number spaces, so mixing them per-entry scrambles the order.
+    if all("executionIndex" in r for r in entries):
+        order = lambda r: r["executionIndex"]  # noqa: E731
+    else:
+        order = lambda r: r.get("startTime", 0)  # noqa: E731
 
     rows = []
     for node, runs in run_data.items():
@@ -22,9 +30,7 @@ def from_n8n(execution):
             if args is None:
                 continue
             rows.append((
-                # executionIndex is a monotonic int across the whole execution;
-                # startTime only has millisecond resolution.
-                r.get("executionIndex", r.get("startTime", 0)),
+                order(r),
                 Step(
                     tool=node,
                     args=args,

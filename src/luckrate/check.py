@@ -23,6 +23,7 @@ def check(steps, spec, task_input=""):
     spec:       dict of constraints; see README
     task_input: the agent's input, used as the provenance root
     """
+    _validate(spec)
     v = []
     names = [s.tool for s in steps]
 
@@ -50,6 +51,26 @@ def check(steps, spec, task_input=""):
     if spec.get("ground", True):
         v += _ungrounded(steps, task_input)
     return v
+
+
+def _validate(spec):
+    """Fail loud on a spec that names tools outside its own vocabulary.
+
+    A typo in `required` is indistinguishable from an agent that never called
+    the tool, so without this every run reports a violation the agent did not
+    commit and the spec author hunts the wrong bug.
+    """
+    vocab = spec.get("tools")
+    if not vocab:
+        return
+    named = set(spec.get("required", [])) | set(spec.get("forbidden", []))
+    for a, b in spec.get("before", []):
+        named |= {a, b}
+    unknown = sorted(named - set(vocab))
+    if unknown:
+        raise ValueError(
+            "spec names tools that are not in its 'tools' vocabulary: "
+            + ", ".join(unknown))
 
 
 def _repeats(steps):

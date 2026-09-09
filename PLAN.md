@@ -247,10 +247,11 @@ Two things that cost an afternoon if met by surprise:
 | n8n runner | `n8n_runner(webhook_url, api_key) -> callable` | 30 |
 | Runner | `evaluate(cases, runner, k=5) -> list[dict]` | 15 |
 | Report | `report(rows) -> float` | 15 |
-| Tests | `test_evals.py`, fixture-based | 100 |
+| Spec validation | `_validate(spec)` | 15 |
+| Tests | 5 files, fixture-based | 300 |
 
-One module, ~165 lines of logic. No service, no database, no dashboard, no custom
-n8n node, no plugin system.
+Five modules, ~220 lines of logic. No service, no database, no dashboard, no
+custom n8n node, no plugin system.
 
 ### Repo layout
 
@@ -359,59 +360,85 @@ Confirmed against a real 2.38.1 execution during P1:
 - `graph.get_state_history()` is an alternative source when checkpointing is on;
   the message list is simpler and sufficient.
 
-## 7. Phases
+## 7. Phases — done
 
-**P0 — Core.** *Half day.*
-`Step`, `check()`, `_ungrounded()`, `test_evals.py` on hand-written fixtures.
-**Exit:** `pytest` green across every violation type, with no framework imported.
+| Phase | Delivered | Verified by |
+|---|---|---|
+| P0 | `Step`, `check()`, `_ungrounded()`, severity tiers | 16 tests, no framework imported |
+| P1 | n8n 2.38.1 + agent workflow, 4 fixtures from real runs | scrubbed, 0 secret hits |
+| P2 | `from_n8n()` | good passes clean; each broken fixture trips only its own check |
+| P3 | `evaluate()`, `report()`, `failed()`, `n8n_runner()` | live end-to-end, exit 0 |
+| P4 | `from_langgraph()` | same spec scores both frameworks identically |
+| P5 | packaging, CI, README | wheel installs in a clean venv; CI green on 3.9/3.11/3.13 |
 
-Do this first **even though n8n is the priority target.** It proves the scorer
-against fixtures you control, so when n8n's execution data misbehaves you already
-know the bug is in the adapter.
+33 tests. Repo public at `vidhyasagar-lab/agent-evaluator`, commit `d911249`.
+Package name `luckrate` (repo name and package name differ deliberately —
+`agent-evaluator` was taken on PyPI in spirit if not in fact, and `luckrate`
+names the contribution).
 
-**P1 — n8n environment.** *Half day. Container already up: 2.38.1, SQLite.*
-Build the sample workflow — Webhook trigger → AI Agent with 3–4 tools → *Respond
-to Webhook* returning `{{ $execution.id }}` beside the agent output (§4.4).
+## 8. Remaining work
 
-**Capture four runs, not one.** One correct run plus three deliberately broken
-agents: one that skips the policy check, one that loops on a failing tool, one
-that fabricates an order id. Nothing else proves the evaluator detects what it
-claims, and these become the README's evidence.
-**Exit:** four scrubbed fixtures in `tests/fixtures/`.
+Ordered. R1 is the only one blocking release; everything after R3 is optional.
 
-**P2 — n8n adapter.** *1 day.*
-Walk `runData`, sort by `startTime`, unwrap `inputOverride`.
-**Exit:** the good fixture passes clean, and each broken fixture trips exactly the
-check it was built to trip — no more, no fewer.
-Budget the full day. `runData` is the messy part and the one thing n8n upgrades
-break.
+**R1 — Record a real LangGraph fixture.** *~15 min. Yours: needs your agent.*
+`tests/fixtures/langgraph_good.json` is hand-authored to the documented LangChain
+message schema, marked `_note` in the file. Every other fixture came off a real
+run.
 
-**P3 — Runner and gate.** *Half day.*
-`n8n_runner()` per §4.4, `evaluate()` at `k=5`, stdout table, `sys.exit(1)` on hard
-violations and soft-violation majorities.
-**Exit:** one command runs the suite against the live n8n instance.
+```python
+result = graph.invoke({"messages": [("user", "I want a refund for order 88213, it arrived broken.")]})
+json.dump({"messages": [m.model_dump() for m in result["messages"]]}, open("langgraph_good.json", "w"), indent=2)
+```
 
-**P4 — LangGraph adapter.** *Half day.*
-**Exit:** the same spec scores an n8n agent and a LangGraph agent identically.
+The agent needs tools named `lookup_order`, `check_policy`, `escalate_to_human`,
+`issue_refund` for the existing spec to apply unchanged. Scrub before committing.
+**Exit:** `test_same_spec_scores_both_frameworks_identically` passes against a
+recorded trajectory, not an authored one.
 
-This is the real test of the design. If `Step` must change to fit LangGraph, change
-it **here**, before v0.1 freezes the contract for contributors.
+**Why this blocks release:** v0.1 freezes `Step` as a public contract. Half the
+evidence that it is framework-generic is currently synthetic, and after release a
+schema change breaks every contributed adapter.
 
-**P5 — Release v0.1.** *1 day.*
-`pyproject.toml`, MIT, GitHub Actions, README leading with the two-framework
-comparison and Luck Rate. Publish to PyPI.
-**Exit:** `pip install` works from a clean venv.
+**R2 — Publish v0.1 to PyPI.** *~20 min.*
+Bump `0.1.0.dev0` → `0.1.0`, rebuild, upload.
 
-**P6 — CrewAI.** *1 day. Optional.*
-First multi-agent framework; `agent` starts earning its keep. A good "help wanted"
-issue rather than something you build yourself.
+```
+python -m build
+python -m twine upload dist/*
+```
 
-**Total: ~4 days to a published v0.1 covering two frameworks.**
+Needs a PyPI API token (separate from the GitHub PAT). Tag the commit `v0.1.0`.
+**Exit:** `pip install luckrate` works in a clean venv on another machine.
 
-Check the PyPI name is free before P5, and before it goes in the README.
-`agent-evaluator` is likely taken — pick something distinctive.
+**R3 — Trim the GitHub PAT.** *~2 min. Security hygiene, do it regardless.*
+The token has 36 read-only repository permissions and can read all 5 private
+repos, and it lives in a `.env` on disk. This project needs exactly
+**Contents: Read and write** plus **Metadata: Read-only**. Set everything else to
+*No access*.
 
-## 8. The demo
+**R4 — State the audience in the README.** *~10 min.*
+§0 says the user is the platform engineer who runs the agent infra and owns CI.
+The README does not say so, which leaves the tension visible: "n8n users do not
+write Python" followed by a Python library. One paragraph closes it.
+
+**R5 — File CrewAI as a help-wanted issue.** *Optional.*
+Better as the first outside contribution than as something you build: it tests
+whether the adapter contract actually works for someone who did not write it.
+The `agent` field starts earning its keep here. If nobody takes it, that is
+information too — and `agent` should then be deleted before v1.0.
+
+**R6 — Announce.** *Optional.*
+The cross-framework claim is demonstrable, which is unusual for a v0.1. The n8n
+community forum and r/LocalLLaMA are where the audience actually is. Lead with
+the two-framework assertion and Luck Rate, not with the word "novel".
+
+**R7 — Housekeeping.** *~1 min.*
+`docker compose down`. The workflow is active and `EXECUTIONS_DATA_PRUNE=false`,
+so every run accumulates in SQLite indefinitely.
+
+**Not scheduled:** everything in §10. Each has a trigger; none has fired.
+
+## 9. The demo
 
 Run the **same spec** against an n8n agent and a LangGraph agent. Score both on
 identical criteria: path validity, redundancy, recovery, steps, Luck Rate.
@@ -421,7 +448,7 @@ table comparing two frameworks on one task, from one harness, explains the proje
 without a paragraph of setup. CrewAI makes it three — but do not put a
 three-framework table in the README until the third adapter exists.
 
-## 9. Skipped, and the trigger to add it
+## 10. Skipped, and the trigger to add it
 
 | Skipped | Add when |
 |---|---|
@@ -443,7 +470,7 @@ three-framework table in the README until the third adapter exists.
 The open-source temptation is to build the plugin system before the second plugin
 exists. Two adapters do not justify an architecture.
 
-## 10. Risks
+## 11. Risks
 
 - **`runData` is not a stable contract.** Confine all parsing to `from_n8n()` so an
   n8n upgrade breaks exactly one function. The image is pinned for this reason.
@@ -462,7 +489,7 @@ exists. Two adapters do not justify an architecture.
 - **The failure mode is starting with adapters.** Five half-working integrations
   and no scoring logic. P0 first, always.
 
-## 11. References
+## 12. References
 
 - [n8n — Test and improve AI workflows](https://docs.n8n.io/build/integrate-ai/test-and-improve-ai-workflows)
 - [n8n — Tools Agent](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent/tools-agent)

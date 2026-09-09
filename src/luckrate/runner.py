@@ -1,6 +1,7 @@
 """Run a suite of cases k times, score each run, report Luck Rate, gate a build."""
 import json
 import time
+import urllib.error
 import urllib.request
 
 from luckrate.check import check, hard
@@ -11,7 +12,19 @@ def evaluate(cases, runner, k=5):
     rows = []
     for case in cases:
         for i in range(k):
-            steps, output = runner(case["input"])
+            try:
+                steps, output = runner(case["input"])
+            except Exception as exc:
+                # A suite is real money: one network blip must not discard every
+                # completed run. Record the failure and keep going. It counts as
+                # a hard violation because a suite that did not finish cannot
+                # certify anything.
+                rows.append({
+                    "case": case["name"], "run": i, "output_ok": False,
+                    "violations": ["run failed: {}".format(exc)],
+                    "hard": ["run failed: {}".format(exc)], "steps": 0,
+                })
+                continue
             violations = check(steps, case.get("spec", {}), case["input"])
             rows.append({
                 "case": case["name"],
