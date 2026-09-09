@@ -7,6 +7,17 @@ the answer it returned.
 > adapters, runner and CI gate are done and tested against recorded real runs.
 > See [PLAN.md](PLAN.md).
 
+## Who this is for
+
+Platform engineers who run agent infrastructure and own the pipeline — you deploy
+agents in n8n or LangGraph, and you want a path regression to fail a build before
+it reaches production.
+
+The gap being filled is that **n8n has no path grading at all**, while code-first
+frameworks have had it for a while. But the user is the person who owns CI, not
+the person on the canvas: this is a Python library configured with Python dicts,
+and it is aimed one layer up from the visual editor.
+
 ## Why
 
 Every agent eval scores the final output. Right answer, pass.
