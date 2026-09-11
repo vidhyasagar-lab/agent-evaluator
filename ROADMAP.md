@@ -6,15 +6,15 @@ What to build, in order, with enough detail to pick any item up cold.
 is only forward-looking. Each item states what it touches, roughly how big it is,
 and what "done" means — so nothing here needs the conversation that produced it.
 
-**Ordering principle:** finish v0.1 (A), then the security wedge (B), because B is
-the only differentiated space. C and D are catch-up work with the field and should
-not jump the queue.
+**Ordering principle:** finish v0.1 (A) first. B was built and deliberately
+narrowed after research showed the space was occupied — read B0 before extending
+it. C buys reach; D is catch-up with the field and should not jump the queue.
 
 ---
 
 ## A — Finish v0.1
 
-Release blockers and hygiene. Detail lives in [PLAN.md](PLAN.md) §8.
+Release blockers and hygiene.
 
 ### A1 — Real LangGraph serialization — ✅ done
 **Was:** the fixture was hand-authored to the LangChain message schema, so half the
@@ -66,96 +66,71 @@ followed by the four things that are genuinely different here.
 
 ---
 
-## B — The security wedge
+## B — Security: taint tracking — done, and narrowed
 
-**The differentiated work.** `_ungrounded()` already performs data-flow analysis —
-it asks where an argument value came from, and currently only reports "nowhere."
-The same pass can report *which source*, and that distinction is most of agent
-security.
+### B0 — Verify the prior art — done, and the gate fired
 
-Eval tools score quality. None of them enforce policy. Constraint specs are good at
-exactly that: deterministic rules, not judgment.
+Researched. This space is **occupied**:
 
-### B0 — Verify the prior art before building any of B
-**Build:** research Invariant Labs (trace analysis with a policy language), NVIDIA
-NeMo Guardrails, Lakera, LlamaFirewall, and anything newer. Establish what overlaps
-B2–B4 and what does not.
-**Why:** the novelty question in this project has been wrong twice — once on
-trajectory evaluation generally, once on n8n coverage. Both times the claim was
-made before checking. Do not repeat it a third time.
-**Expected finding:** runtime guardrails are an occupied space. The likely gap is
-the *insertion point* — policy checks running **in CI against recorded
-trajectories** rather than as a runtime firewall. Guardrails block at execution;
-this fails a build before deploy. Different buyer, different failure mode.
-**Size:** 20 minutes.
-**Blocks:** B1–B4. Do not skip.
+- **[Invariant Labs](https://github.com/invariantlabs-ai/invariant)** (acquired by
+  Snyk) ships a policy language evaluated against agent traces — `invariant-ai`
+  loads and evaluates policies given a trace. That was B2/B3, as a product.
+- **[NeuroTaint](https://arxiv.org/html/2604.23374v1)** — taint tracking for LLM
+  agents that audits execution traces *offline*, reconstructing provenance from
+  untrusted sources to privileged sinks. That was B1+B3+B4, academically.
+- **CaMeL**, **Prompt Flow Integrity**, **StruQ** — control/data flow separation
+  and privilege-escalation prevention at the architecture level.
 
-### B1 — Provenance tagging
-**Build:** extend the `_ungrounded` pass so each argument value is attributed to a
-source: `user` (the task input), `tool:<name>` (an earlier tool result), or
-`invented` (untraceable). Return the map rather than only the warnings.
-**Why:** the foundation for B2, B3 and B4. On its own it also upgrades the existing
-warning from "this is invented" to "this came from the web page you fetched."
-**Touches:** `src/luckrate/check.py`
-**Size:** ~30 lines. **No schema change** — provenance is computed, not stored, so
-this is additive and does not touch the frozen `Step` contract.
-**Done when:** a test asserts an argument sourced from a tool result is labelled
-`tool:<name>`, not `user`, and not `invented`.
+The pattern is described in the literature as established: a tool call whose
+arguments trace to an untrusted source without passing a sanitizer is a policy
+violation.
 
-### B2 — `grounded_in`: indirect prompt injection
-**Build:** a spec key asserting where an argument must originate.
+**This was the trigger written into the bottom of this file.** The response was to
+narrow, not to expand: build the useful part, drop the redundant part, claim
+nothing.
+
+### B1 + B3 — Provenance and taint rules — done
+
+Built as **one** feature, not four. `_provenance()` maps each identifier-shaped
+argument to the sources it traces to — `user`, `tool:<name>`, or `invented` — and
+`_tainted()` flags a privileged call consuming data that came only from an
+untrusted tool.
 
 ```python
-"grounded_in": {
-    "issue_refund.amount":   "user",
-    "issue_refund.order_id": "user",
-}
+"untrusted":  ["fetch_page", "read_email"],
+"privileged": ["issue_refund", "send_email"],
 ```
 
-If `issue_refund.amount` traces to `fetch_webpage`'s output instead of the user's
-message, that is the canonical indirect-injection signature: content the agent
-*read* caused a privileged action.
-**Why:** detected structurally, with no LLM judge and no model of what injection
-"looks like." Deterministic, free, reproducible.
-**Touches:** `check.py`, README, CONTRIBUTING
-**Size:** ~20 lines on top of B1.
-**Severity:** hard. This is correctness, not variance.
-**Done when:** a fixture where a tool result supplies a privileged argument fails,
-and the same trajectory with a user-supplied argument passes.
+Severity **hard**: security is correctness, not variance. Off unless both lists are
+declared. `_ungrounded()` was refactored to read the same provenance, so the two
+checks cannot contradict each other.
 
-### B3 — Taint rules across a trust boundary
-**Build:** classify tools, then enforce one rule.
+~55 lines, no schema change, 7 tests in `tests/test_taint.py`.
 
-```python
-"untrusted":  ["fetch_webpage", "read_email", "read_file"],
-"privileged": ["issue_refund", "send_email", "delete_record"],
-# no privileged call may consume untrusted-tainted data
-```
+### B2 — `grounded_in` per-argument rules — dropped
 
-**Why:** the lethal-trifecta pattern — private data, untrusted content, an
-exfiltration path — expressed as a constraint rather than a vibe.
-**Touches:** `check.py`
-**Size:** ~25 lines, reusing B1's taint map.
-**Done when:** a trajectory where `fetch_webpage` output reaches `issue_refund`
-arguments fails, and an intervening human-approval step clears it.
+Redundant. A categorical untrusted/privileged rule covers the real cases with far
+less spec authoring than naming every argument. Add it only if someone needs
+argument-level precision that the categorical rule cannot express.
 
-### B4 — Exfiltration checks
-**Build:** B1 inverted. Flag when an argument to an outbound tool contains a value
-that originated from a private-data tool — `send_email.body` carrying something
-from `read_customer_record`.
-**Touches:** `check.py`
-**Size:** ~15 lines once B1 exists.
-**Done when:** a fixture moving private data into an outbound argument fails.
+### B4 — Exfiltration checks — dropped, already covered
 
-### B5 — Secret leakage scan
-**Build:** scan `Step.args` and `Step.result` for credential patterns — API keys,
-bearer tokens, private key headers.
-**Why:** cheap and useful, but commodity. Lowest priority in B; do it only if it
-falls out of the other work.
-**Size:** ~15 lines.
-**Severity:** warn.
+The same rule catches it: `send_email.to` taking an address that only ever appeared
+in fetched content is a privileged call consuming untrusted data. There is a test
+for exactly this shape. No separate feature needed.
 
----
+### B5 — Secret leakage scan — not built
+
+Commodity, and nothing has asked for it. Scan `Step.args` and `Step.result` for
+credential patterns if that changes. ~15 lines, warn severity.
+
+### Known limits, documented in the README
+
+- **A detector, not a defence.** It reports that an agent consumed untrusted data
+  in a privileged call, on a run that already happened. It cannot block one.
+- **Substring matching** cannot distinguish a real data flow from a coincidental
+  match, and only inspects identifier-shaped values. A paraphrased injection is
+  invisible to it.
 
 ## C — Reach
 
