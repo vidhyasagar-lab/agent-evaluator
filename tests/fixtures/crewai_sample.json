@@ -1,0 +1,26 @@
+{
+  "steps": [
+    {
+      "tool": "lookup_order",
+      "args": {
+        "id": "call_99991234",
+        "order_id": "ORD-12345"
+      },
+      "agent": "Senior Researcher",
+      "status": "success",
+      "result": "Order ORD-12345 is currently in transit.",
+      "t": 120.0
+    },
+    {
+      "tool": "send_email",
+      "args": {
+        "recipient": "customer@example.com",
+        "message": "Your package is on the way."
+      },
+      "agent": "Customer Support Agent",
+      "status": "failed",
+      "result": "SMTP connection timed out.",
+      "t": 350.5
+    }
+  ]
+}
