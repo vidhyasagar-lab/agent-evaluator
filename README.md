@@ -302,8 +302,12 @@ from luckrate.adapters.langgraph import from_langgraph  # message list
 assert check(from_n8n(execution), spec, task) == check(from_langgraph(msgs), spec, task)
 ```
 
-That assertion is a real test, not an aspiration. No other eval tool does this,
-because each is welded to one framework.
+That assertion is a real test, not an aspiration.
+
+Other tools are framework-agnostic too — DeepEval, MLflow and Arize Phoenix all
+are. The narrower thing this does: the same spec scores a **visual-runtime** agent
+and a code-framework agent **without instrumenting either one**. The n8n adapter
+reads execution data the platform already records, from an unmodified workflow.
 
 **These four trajectories are recorded from real n8n agent runs** and ship as
 fixtures — they are the evidence that the checks detect what they claim:
@@ -453,21 +457,35 @@ even when the answers still look fine.
 </details>
 
 <details>
-<summary><b>How is this different from <code>agentevals</code> or LangSmith?</b></summary>
+<summary><b>How does this compare to DeepEval, MLflow, Phoenix, Langfuse, agentevals?</b></summary>
 
 <br>
 
-`agentevals` does trajectory matching well, for LangGraph, in Python. Two
-differences:
+They are all more featureful, and several are excellent. Be clear-eyed:
 
-1. **It matches against a reference trajectory** — a literal golden path, expensive
-   to author and brittle against agents that vary legitimately. This matches against
-   a constraint spec instead.
-2. **It is code-first only.** Nothing grades paths for n8n, where a large population
-   runs agents in production.
+| Tool | Covers |
+|---|---|
+| [DeepEval](https://deepeval.com/guides/guides-ai-agent-evaluation-metrics) | tool correctness, argument correctness, plan adherence, step efficiency, task completion — Apache 2.0, pytest-style, same shape as this |
+| [MLflow](https://mlflow.org/top-5-agent-evaluation-frameworks/) | Agent GPA scorers: tool selection, plan quality, execution efficiency |
+| [Arize Phoenix](https://arize.com/resources/llm-and-agent-evaluation-platforms/) | OTel-native trajectory evals, self-hostable |
+| [Langfuse](https://langfuse.com/integrations/no-code/n8n) | tool calls as structured fields for code and LLM-judge evaluators — **and a native n8n integration** |
+| [agentevals](https://github.com/langchain-ai/agentevals) | trajectory match: strict, unordered, LLM-judge |
 
-If you are LangGraph-only and happy writing golden paths, `agentevals` is mature and
-first-party. Use it.
+**If you want breadth, use DeepEval.** It is mature, Apache 2.0, and covers more
+than this does.
+
+Four things here are actually different:
+
+1. **Constraint specs, not expected-tool lists.** `forbidden` plus partial ordering
+   plus a budget is a different model from matching a golden path or an
+   `expected_tools` set.
+2. **Deterministic argument checking.** DeepEval's Argument Correctness uses an LLM
+   judge. Grounding here is substring provenance: free, instant, reproducible.
+3. **No instrumentation.** Langfuse needs tracing wired into the n8n workflow. This
+   reads execution data the platform already stores, from an unmodified workflow.
+4. **Luck Rate.** No tool found reports right-answer-wrong-path as a metric.
+
+Plus zero dependencies and ~220 lines, against platforms that are servers.
 
 </details>
 

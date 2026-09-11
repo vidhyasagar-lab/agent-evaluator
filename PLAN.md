@@ -76,21 +76,31 @@ any number the tool prints.
 
 ## 3. Prior art
 
+Revised after actually researching the market. The first version of this table was
+too flattering and produced an over-claim that shipped in the README.
+
 | Tool | Covers | Gap |
 |---|---|---|
 | n8n Evaluations | dataset in, answer out, model comparison | no path grading at all |
-| LangChain `agentevals` | trajectory match: strict, unordered, LLM-judge | code-first; reference is a literal golden path |
-| LangSmith | traces, run and thread eval | SaaS, framework-bound |
+| `agentevals` | trajectory match: strict, unordered, LLM-judge | code-first; reference is a literal golden path |
+| **DeepEval** | tool correctness, argument correctness, plan adherence, step efficiency, task completion | argument checking needs an LLM judge; no visual-runtime reach |
+| **MLflow** | Agent GPA: tool selection, plan quality, execution efficiency | heavyweight; tied to MLflow tracing |
+| **Arize Phoenix** | OTel-native trajectory evals | requires instrumentation |
+| **Langfuse** | tool calls as structured fields, **native n8n integration** | observability + judges, not constraint-based gating |
+| LangSmith | traces, run and thread eval | SaaS |
 
-Trajectory evaluation is **not** a new idea — `agentevals` is LangChain's own
-package and does it well for LangGraph. Two things are genuinely unserved:
+Trajectory evaluation is **not** new, and neither is framework-agnosticism. What
+survives scrutiny is narrower:
 
-1. **No path grading exists for n8n**, where a large and growing population runs
-   agents in production.
-2. **Nobody grades against a constraint spec.** Golden-path references are
-   expensive to author and brittle against agents that vary legitimately.
+1. **Constraint specs**, not `expected_tools` lists or golden paths — `forbidden`
+   plus partial ordering plus a budget is a different model.
+2. **Deterministic argument provenance.** DeepEval's equivalent uses an LLM judge;
+   this is substring tracing — free, instant, reproducible.
+3. **No instrumentation for n8n.** Langfuse needs tracing wired into the workflow;
+   this reads execution data the platform already stores.
+4. **Luck Rate.** Nothing found reports right-answer-wrong-path.
 
-Pitch those two. Not "nobody grades the path."
+Pitch those four. Never "nobody grades the path" — that has been wrong twice.
 
 ## 4. Design
 
@@ -378,65 +388,10 @@ names the contribution).
 
 ## 8. Remaining work
 
-Ordered. R1 is the only one blocking release; everything after R3 is optional.
+Moved to **[ROADMAP.md](ROADMAP.md)**, which is the single source of truth for
+forward work. This file stays the design record: what was built, and why.
 
-**R1 — Record a real LangGraph fixture.** *~15 min. Yours: needs your agent.*
-`tests/fixtures/langgraph_good.json` is hand-authored to the documented LangChain
-message schema, marked `_note` in the file. Every other fixture came off a real
-run.
-
-```python
-result = graph.invoke({"messages": [("user", "I want a refund for order 88213, it arrived broken.")]})
-json.dump({"messages": [m.model_dump() for m in result["messages"]]}, open("langgraph_good.json", "w"), indent=2)
-```
-
-The agent needs tools named `lookup_order`, `check_policy`, `escalate_to_human`,
-`issue_refund` for the existing spec to apply unchanged. Scrub before committing.
-**Exit:** `test_same_spec_scores_both_frameworks_identically` passes against a
-recorded trajectory, not an authored one.
-
-**Why this blocks release:** v0.1 freezes `Step` as a public contract. Half the
-evidence that it is framework-generic is currently synthetic, and after release a
-schema change breaks every contributed adapter.
-
-**R2 — Publish v0.1 to PyPI.** *~20 min.*
-Bump `0.1.0.dev0` → `0.1.0`, rebuild, upload.
-
-```
-python -m build
-python -m twine upload dist/*
-```
-
-Needs a PyPI API token (separate from the GitHub PAT). Tag the commit `v0.1.0`.
-**Exit:** `pip install luckrate` works in a clean venv on another machine.
-
-**R3 — Trim the GitHub PAT.** *~2 min. Security hygiene, do it regardless.*
-The token has 36 read-only repository permissions and can read all 5 private
-repos, and it lives in a `.env` on disk. This project needs exactly
-**Contents: Read and write** plus **Metadata: Read-only**. Set everything else to
-*No access*.
-
-**R4 — State the audience in the README.** *~10 min.*
-§0 says the user is the platform engineer who runs the agent infra and owns CI.
-The README does not say so, which leaves the tension visible: "n8n users do not
-write Python" followed by a Python library. One paragraph closes it.
-
-**R5 — File CrewAI as a help-wanted issue.** *Optional.*
-Better as the first outside contribution than as something you build: it tests
-whether the adapter contract actually works for someone who did not write it.
-The `agent` field starts earning its keep here. If nobody takes it, that is
-information too — and `agent` should then be deleted before v1.0.
-
-**R6 — Announce.** *Optional.*
-The cross-framework claim is demonstrable, which is unusual for a v0.1. The n8n
-community forum and r/LocalLLaMA are where the audience actually is. Lead with
-the two-framework assertion and Luck Rate, not with the word "novel".
-
-**R7 — Housekeeping.** *~1 min.*
-`docker compose down`. The workflow is active and `EXECUTIONS_DATA_PRUNE=false`,
-so every run accumulates in SQLite indefinitely.
-
-**Not scheduled:** everything in §10. Each has a trigger; none has fired.
+Tracking the same items in two places was already drifting.
 
 ## 9. The demo
 
