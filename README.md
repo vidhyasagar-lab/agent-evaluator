@@ -429,9 +429,13 @@ library; nothing pulls in `requests`, `langchain`, or an n8n client.
 - [ ] Publish v0.1 to PyPI
 - [ ] CrewAI adapter — [help wanted](https://github.com/vidhyasagar-lab/agent-evaluator/issues/1)
 
-Deliberately unbuilt, each with a trigger in [PLAN.md](PLAN.md) §10: OpenTelemetry
-ingestion, a custom n8n node, token/cost tracking, a results database, a dashboard,
-parallel runs.
+Next up is a security layer built on the provenance machinery that already powers
+grounding — attributing each argument to its source, so an argument that arrived
+from a fetched web page rather than the user is detectable as indirect prompt
+injection, structurally and without an LLM judge.
+
+**[ROADMAP.md](ROADMAP.md)** has the full build order, sized and sequenced.
+Deliberately unbuilt items, each with a trigger, are in [PLAN.md](PLAN.md) §10.
 
 ---
 
